@@ -10,6 +10,10 @@ public class movement : MonoBehaviour {
 	public bool rpressed = false;  //right button
 	private Animator anime;
 
+	private bool isgrounded;
+	public Transform ground;
+	public float checkradius;
+	public LayerMask isGround;
 	Rigidbody2D rb;
 	// Use this for initialization
 	void Start () {
@@ -24,39 +28,42 @@ public class movement : MonoBehaviour {
 
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+		isgrounded = Physics2D.OverlapCircle (ground.position, checkradius, isGround);
+
+
 		touch script = GetComponent<touch> ();//getting groundcheck from touch script
-		if (lpressed == true && script.vertical == false && script.side == 1) {  //if left and horizontal
-			//transform.eulerAngles = new Vector3 (0, 180, 0);
+
+
+		if (lpressed == true && script.vertical == false && script.side == 1 && isgrounded == true) {  //if left and horizontal
 			rb.velocity = new Vector2 (-speed, 0);
 			r.flipX = true;
-		} else if (rpressed == true && script.vertical == false && script.side == 1) {	//right and horizontal
+		} else if (rpressed == true && script.vertical == false && script.side == 1 && isgrounded == true) {	//right and horizontal
 			rb.velocity = new Vector2 (speed, 0);
-			//transform.eulerAngles = new Vector3 (0, 0, 0);
 			r.flipX = false;
-		} else if (lpressed == true && script.vertical == false && script.side == 2) {  //if left and horizontal side up
-			//transform.eulerAngles = new Vector3 (0, 0, 180);
+		} else if (lpressed == true && script.vertical == false && script.side == 2 && isgrounded == true) {  //if left and horizontal side up
+
 			rb.velocity = new Vector2 (-speed, 0);
 			r.flipX = false;
-		} else if (rpressed == true && script.vertical == false && script.side == 2) {	//right and horizontal side up
+		} else if (rpressed == true && script.vertical == false && script.side == 2 && isgrounded == true) {	//right and horizontal side up
 			rb.velocity = new Vector2 (speed, 0);
-			//transform.eulerAngles = new Vector3 (0, 180, 180);
+
 			r.flipX = true;
-		} else if (lpressed == true && script.vertical == true && script.side == 4) {  //left and verticalm side left
+		} else if (lpressed == true && script.vertical == true && script.side == 4 && isgrounded == true) {  //left and verticalm side left
 			rb.velocity = new Vector2 (0, speed);
-			//transform.eulerAngles = new Vector3 (180, 0, -90);
+
 			r.flipX = true;
-		} else if (rpressed == true && script.vertical == true && script.side == 4) {	//right and vertical side left
+		} else if (rpressed == true && script.vertical == true && script.side == 4 && isgrounded == true) {	//right and vertical side left
 			rb.velocity = new Vector2 (0, -speed);
-			//transform.eulerAngles = new Vector3 (0, 0, -90);
+	
 			r.flipX = false;
-		} else if (lpressed == true && script.vertical == true && script.side == 3) {  //left and vertical side right
+		} else if (lpressed == true && script.vertical == true && script.side == 3 && isgrounded == true) {  //left and vertical side right
 			rb.velocity = new Vector2 (0, -speed);
-			//transform.eulerAngles = new Vector3 (180, 0, 90);
+
 			r.flipX = true;
-		} else if (rpressed == true && script.vertical == true && script.side == 3) {	//right and vertical side right
+		} else if (rpressed == true && script.vertical == true && script.side == 3 && isgrounded == true) {	//right and vertical side right
 			rb.velocity = new Vector2 (0, speed);
-			//transform.eulerAngles = new Vector3 (0, 0, 90);
+
 			r.flipX = false;
 		}
 			
@@ -65,25 +72,29 @@ public class movement : MonoBehaviour {
 
 	public void left()
 	{
+		Debug.Log (isgrounded);	
+		if (isgrounded == true)
+		{
+			
 		lpressed = true;//left
-		anime.SetBool("runleft", true);
 		anime.SetBool("irunning",true);
+	}
 	}
 	public void right()
 	{
+		Debug.Log (isgrounded);	
+		if(isgrounded == true)
+		{
 		rpressed = true;  // right
-		anime.SetBool("runright", true);
 		anime.SetBool("irunning",true);
 
 		}
+}
 	public void nothing()
 	{
 		
 		lpressed = false;
 		rpressed = false;
-
-		anime.SetBool ("runleft", false);
-		anime.SetBool("runright",false);
 		anime.SetBool("irunning",false);
 	}
 
